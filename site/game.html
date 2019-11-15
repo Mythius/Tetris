@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tetris</title>
+	<link rel=stylesheet href=style.css>
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+	<script src="helpers.js"></script>
+	<script src="grid.js"></script>
+	<script src="sam.js"></script>
+	<script src="animation.js"></script>
+	<script src="audio.js"></script>
+</head>
+<body>
+	<div>
+		<main></main>
+		<p></p>
+	</div>
+	<script src=tetris.js></script>
+	<script>
+		var game = new Tetris(obj('div'));
+		game.setup();
+
+		var PUBLIC = false;
+
+		document.on('keydown',function(e){
+			game.setSeed(random(1,9999));
+			if(e.key == "Enter") game.start();
+		})
+	</script>
+</body>
+</html>

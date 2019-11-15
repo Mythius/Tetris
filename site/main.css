@@ -1,0 +1,48 @@
+*{
+	box-sizing: border-box;
+	image-rendering: pixelated;
+}
+body{
+	background-image: url(background.png);
+}
+.box{
+	font-family: courier;
+	background-color: gray;
+	width: 100%;
+	padding: 11px;
+	text-align: center;
+	/* opacity: .9; */
+}
+button{
+	background-color: #444;
+	border: 1px solid white;
+	font-family: courier;
+	color: white;
+	transition: background-color .2s, color .2s;
+	margin-right: 5px;
+}
+button:hover{
+	background-color: darkgray;
+	color: black;
+}
+button:disabled{
+	border: 1px solid black;
+	background-color: #444;
+	color: darkgray;
+}
+li{
+	border-bottom: 1px solid white;
+	padding: 10px;
+	background-color: #aaa;
+	transition: background-color .3s;
+}
+li:hover{
+	background-color: lightgray;
+}
+li:last-of-type{
+	border-bottom: 0;
+}
+h3,h4,hr{
+	margin: 0;
+	display: inline;
+}

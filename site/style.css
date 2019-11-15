@@ -1,0 +1,20 @@
+tile{
+	visibility: hidden;
+}
+main{
+	background-color: #222;
+}
+body{
+	background-color: gray;
+	margin: 0;
+}
+img{
+	visibility: default;
+	opacity: 1;
+}
+p{
+	font-family: 'Titillium Web', sans-serif;
+	font-size: 25px;
+	color: white;
+	margin: 5px;
+}

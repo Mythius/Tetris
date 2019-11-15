@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tetris</title>
+	<link rel=stylesheet href=style.css>
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+	<script src="helpers.js"></script>
+	<script src="grid.js"></script>
+	<script src="sam.js"></script>
+	<script src="animation.js"></script>
+	<script src="audio.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<style>
+		gg{
+			display: grid;
+			position: fixed;
+			width: 100%;
+			grid-template-columns: 50% 50%;
+		}
+	</style>
+</head>
+<body>
+	<gg>
+		<div id=me>
+			<main></main>
+			<p></p>
+		</div>
+		<div id=other>
+			<main></main>
+			<p></p>
+		</div>
+	</gg>
+	<script src=tetris.js></script>
+	<script>
+		var socket = io();
+		var game,veiw;
+		var PUBLIC = true;
+
+		var id = location.href.split('*')[1];
+		var gid = location.href.split('?')[1].split('*')[0];
+		console.log(gid);
+
+		socket.emit('verify',{id,gid});
+
+
+		socket.on('name',ok=>{
+			if(ok) start();
+			else{
+				alert('ERROR');
+				location.href = '/';
+			}
+		});
+
+		var sentkeys;
+
+		socket.on('start',data=>{
+			if(data.i1.ID == id){
+				if(data.i1.ID < data.i2.ID){
+					game.setSeed(data.s1);
+					view.setSeed(data.s2);
+				} else {
+					game.setSeed(data.s2);
+					view.setSeed(data.s1);
+				}
+			} else {
+				if(data.i1.ID < data.i2.ID){
+					game.setSeed(data.s2);
+					view.setSeed(data.s1);
+				} else {
+					game.setSeed(data.s1);
+					view.setSeed(data.s2);
+				}
+			}
+			game.setup();
+			view.setup();
+		});
+
+		socket.on('actuallystart',g=>{
+			if(g != gid) return;
+			//alert('STARTED');
+			game.start();
+			setTimeout(()=>{view.start()},1000/15);
+		});
+
+		socket.on('keys',data=>{
+			if(data.gid == gid && data.id != id){
+				view.setKeys(data.keys);
+			}
+		})
+		
+		function start(){
+			game = new Tetris(obj('#me'),keys=>{
+				socket.emit('sendkeys',{gid,id,keys});
+			});
+			view = new Tetris(obj('#other'),k=>{});
+
+			view.setMulti();
+		}
+	</script>
+</body>
+</html>

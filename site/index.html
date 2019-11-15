@@ -1,0 +1,25 @@
+<html>
+<head>
+	<title>Tetris</title>
+	<link rel="stylesheet" href="main.css">
+	<script src=/socket.io/socket.io.js></script>
+	<script src="helpers.js"></script>
+</head>
+<body>
+	<h1 class=box>Welcome to Tetris online games woo</h1>
+	<div class=box><button id=play>SINGLE PLAYER</button></div>
+	<br>
+	<div id=start class=box>Enter Your Name: 
+		<input id=name placeholder="Enter Name" type="text">
+		<button id=username>Join</button>
+	</div>
+	<ul id=users class=box>
+		<h3>People Online:</h3>
+		<li></li>
+	</ul>
+	<ul id=reqs class=box>
+		<h3>Requests:</h3>
+	</ul>
+	<script src=main.js></script>
+</body>
+</html>
