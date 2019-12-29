@@ -211,6 +211,7 @@ function Tetris(div,kk){
 				board.setColor(x,y-amount,c);
 			}
 		}
+//Check here for bugs v v v v v v v v v v
 		for(let y=height;y>height-amount;y--){
 			let temparr = [];
 			for(let x=1;x<=width;x++){
@@ -224,6 +225,7 @@ function Tetris(div,kk){
 			}
 			let r = pRandom(1,width);
 			board.setColor(r,y,'black');
+//                     Check here for bugs v v v 
 			let a = temparr.splice(r-1,1)[0].obj.remove();
 			alsams.concat(temparr);
 			console.log(alsams);
