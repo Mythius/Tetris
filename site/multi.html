@@ -77,7 +77,6 @@
 
 		socket.on('actuallystart',g=>{
 			if(g != gid) return;
-			//alert('STARTED');
 			game.start();
 			setTimeout(()=>{view.start()},1000/15);
 		});
@@ -86,7 +85,17 @@
 			if(data.gid == gid && data.id != id){
 				view.setKeys(data.keys);
 			}
-		})
+		});
+
+		socket.on('trash',data=>{
+			if(data.gid == gid){
+				if(data.id == id){
+					game.addTrash(data.trash);
+				} else {
+					view.addTrash(data.trash);
+				}
+			}
+		});
 		
 		function start(){
 			game = new Tetris(obj('#me'),keys=>{
@@ -96,6 +105,13 @@
 
 			view.setMulti();
 		}
+
+
+		function trash(trash){
+			socket.emit('sendtrash',{gid,id,trash});
+		}
+
+
 	</script>
 </body>
 </html>

@@ -18,7 +18,7 @@ var FILE = {
 	}
 };
 
-const port = 80;
+const port = 2000;
 const path = __dirname+'/';
 
 app.use(express.static(path+'site/'));
@@ -60,9 +60,6 @@ io.on('connection',function(socket){
 		data.link = getLink(data);
 		io.emit('send',data);
 	});
-	socket.on('sendkeys',appa=>{
-		io.emit('keys',appa);
-	})
 
 	// FOR GAME
 	var id;
@@ -91,6 +88,12 @@ io.on('connection',function(socket){
 		setTimeout(function(){
 			socket.emit('actuallystart',d.gid);
 		});
+	});
+	socket.on('sendkeys',appa=>{
+		io.emit('keys',appa);
+	});
+	socket.on('sendtrash',trash=>{
+		io.emit('trash',trash);
 	});
 });
 

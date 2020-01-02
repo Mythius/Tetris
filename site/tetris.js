@@ -1,4 +1,4 @@
-function Tetris(div,kk){
+function Tetris(div,kk,sendTrash=()=>{}){
 
 	const width = 10,height = 20,fps=12;
 	var board = new Grid(div.querySelector('main'),10,20,28);
@@ -8,17 +8,17 @@ function Tetris(div,kk){
 	var current_piece,next_piece,saved_piece;
 	var keys = {ArrowUp:false,ArrowDown:false,ArrowLeft:false,ArrowRight:false,Shift:false,Escape:false,i:false};
 	keys[" "]=false;
-	var count = 0,wait = 10,playing = false;
-	var points = 0, display_score = 0;
-	var GAMELOOP,speed = 0;
-	var multi = false;
-	var seed = 23509;
+	var count = 0,wait = 10,playing = false,points = 0, display_score = 0;
+	var GAMELOOP,speed = 0,multi = false,seed = 23509;
+	var disabled_keys = {ArrowDown:false};
+	disabled_keys[" "]=false;
+	var combo = 0;
 
 	function Piece(color,blocks){
 		var rot = pRandom(1,3);
 		var bytearray = toBinary(blocks[rot]);
 
-		var x = pRandom(1,width-4);
+		var x = 4;
 		var y = 1;
 
 		var sams = [];
@@ -30,7 +30,7 @@ function Tetris(div,kk){
 			let sam = new SAM(board,i,28,28);
 			sams.push(sam);
 			alsams.push(sam);
-		})
+		});
 
 		function rotate(n){
 			rot = (rot + n + 4) % 4;
@@ -91,7 +91,7 @@ function Tetris(div,kk){
 		}
 		this.resetPos = function(){
 			draw('black');
-			x = pRandom(1,width-4);
+			x = 4;
 			y = 1;
 		}
 	}
@@ -132,7 +132,7 @@ function Tetris(div,kk){
 		if(multi) return;
 		document.on('keydown',function(e){
 			if(e.key in keys){
-				keys[e.key] = true;
+				if(!disabled_keys[e.key]) keys[e.key] = true;
 				e.preventDefault();
 			}
 		});
@@ -140,8 +140,11 @@ function Tetris(div,kk){
 			if(e.key in keys){
 				if(e.key == 'i') return;
 				keys[e.key] = false;
+				if(e.key in disabled_keys){
+					disabled_keys[e.key] = false;
+				}
 				e.preventDefault();
-			} 
+			}
 		});
 	}
 
@@ -150,7 +153,9 @@ function Tetris(div,kk){
 		if(keys.ArrowLeft) current_piece.move(-1,0,0);
 		if(keys.ArrowDown) current_piece.move(0,1,0);
 		if(keys.ArrowRight) current_piece.move(1,0,0);
-		if(keys.ArrowUp) current_piece.move(0,0,1);
+		if(keys.ArrowUp){
+			current_piece.move(0,0,1);
+		}
 		if(keys.Shift) swapSaved();
 		if(keys.Escape){
 			playing = false;
@@ -161,6 +166,10 @@ function Tetris(div,kk){
 			while(!n){
 				n = current_piece.moveDown();
 				checkNextPiece(n);
+				if(keys[' ']) disabled_keys[" "] = true;
+				if(keys.ArrowDown) disabled_keys.ArrowDown = true;
+				keys[' '] = false;
+				keys.ArrowDown = false;
 			}
 		}
 	}
@@ -196,9 +205,11 @@ function Tetris(div,kk){
 			}
 			if(saved_piece) saved_piece.moveTo(11,2);
 		}
+		sendTrash(Math.max(rr-1+combo,4));
 	}
 
 	function addRows(amount){
+		current_piece.draw('black');
 		for(let s of alsams){
 			let p = s.getPosition();
 			s.goTo(p.x,p.y-amount);
@@ -211,7 +222,8 @@ function Tetris(div,kk){
 				board.setColor(x,y-amount,c);
 			}
 		}
-//Check here for bugs v v v v v v v v v v
+		if(next_piece) next_piece.moveTo(11,1);
+		if(saved_piece) saved_piece.moveTo(11,2);
 		for(let y=height;y>height-amount;y--){
 			let temparr = [];
 			for(let x=1;x<=width;x++){
@@ -225,10 +237,8 @@ function Tetris(div,kk){
 			}
 			let r = pRandom(1,width);
 			board.setColor(r,y,'black');
-//                     Check here for bugs v v v 
 			let a = temparr.splice(r-1,1)[0].obj.remove();
-			alsams.concat(temparr);
-			console.log(alsams);
+			alsams = alsams.concat(temparr);
 		}
 	}
 
@@ -246,9 +256,7 @@ function Tetris(div,kk){
 		// INIT GAME
 
 		board.setColorAll('black');
-
 		setInterval(scoreloop,1000/35);
-
 		addControlls();
 	}
 
@@ -306,7 +314,7 @@ function Tetris(div,kk){
 			next_piece = randomPiece();
 			next_piece.moveTo(11,1);
 			if(keys.i){
-				addRows(1);
+				addRows(2);
 			} 
 			keys.i = false;
 		}
@@ -325,7 +333,7 @@ function Tetris(div,kk){
 				current_piece.draw();
 
 			} else {
-				current_piece.resetPos();
+				if(current_piece) current_piece.resetPos();
 				saved_piece = current_piece;
 				current_piece = next_piece;
 				next_piece = randomPiece();
@@ -359,4 +367,5 @@ function Tetris(div,kk){
 		keys = k;
 		loop();
 	}
+	this.addTrash = addRows;
 }
