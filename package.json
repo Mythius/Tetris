@@ -6,8 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://www.github.com/mythius/tetris"
+  },
   "author": "Matthias Southwick",
   "license": "MIT",
+  "bugs": {
+    "url": "https://www.github.com/mythius/tetris/issues"
+  },
+  "homepage": "https://www.github.com/mythius/tetris#readme",
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
