@@ -19,5 +19,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "electron": "^10.1.2"
   }
 }
