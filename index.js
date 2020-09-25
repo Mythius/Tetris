@@ -18,7 +18,7 @@ var FILE = {
 	}
 };
 
-const port = 2000;
+const port = 80;
 const path = __dirname+'/';
 
 app.use(express.static(path+'site/'));
