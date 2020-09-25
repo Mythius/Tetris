@@ -24,6 +24,7 @@
   "devDependencies": {
     "electron": "^10.1.2",
     "electron-packager": "^15.1.0",
-    "electron-winstaller": "^4.0.1"
+    "electron-winstaller": "^4.0.1",
+    "electron-wix-msi": "^3.0.3"
   }
 }
