@@ -4,8 +4,6 @@
   "description": "Multiplayer Tetris Game",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-packager ."
   },
   "repository": {
     "type": "git",
@@ -21,10 +19,5 @@
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
   },
-  "devDependencies": {
-    "electron": "^10.1.2",
-    "electron-packager": "^15.1.0",
-    "electron-winstaller": "^4.0.1",
-    "electron-wix-msi": "^3.0.3"
-  }
+  "devDependencies": {}
 }
